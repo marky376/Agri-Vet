@@ -4,7 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diagnosis - Animal Diagnosis & Treatment System</title>
+    <title>Diagnosis - AgriVet Diagnosis System</title>
+    <meta name="description"
+        content="Diagnose your livestock diseases instantly by entering symptoms or taking a photo. Get treatment and first-aid remedies for cattle, sheep, goats, pigs, and poultry.">
     <link rel="stylesheet" href="styles.css">
 </head>
 
@@ -27,16 +29,16 @@
     <header>
         <div class="container">
             <div class="logo">
-                <h1>🐾 Animal Diagnosis & Remedies</h1>
-                <p>Quick symptom diagnosis and treatment guidance for livestock</p>
+                <h1>🐾 AgriVet Diagnosis</h1>
+                <p>Empowering Farmers through Early Detection</p>
             </div>
             <nav>
                 <div class="dropdown">
                     <button class="dropdown-btn">☰ Menu</button>
                     <div class="dropdown-content">
-                        <a href="home.html">Home</a>
-                        <a href="diagnosis.html">Diagnosis</a>
-                        <a href="guide.html">Disease Guide</a>
+                        <a href="home.html">🏠 Home</a>
+                        <a href="diagnosis.html">🔍 Diagnosis</a>
+                        <a href="guide.html">📚 Disease Guide</a>
                     </div>
                 </div>
                 <ul>
@@ -50,8 +52,8 @@
     <main class="container">
         <!-- Diagnosis Section -->
         <section class="diagnosis-section">
-            <h2>Search for Disease Diagnosis</h2>
-            <p>Enter the symptoms your animal is experiencing</p>
+            <h2>🔍 Search for Disease Diagnosis</h2>
+            <p>Type your animal's symptoms below — separate multiple symptoms with commas</p>
 
             <div class="search-container">
                 <input type="text" id="symptomInput" placeholder="E.g., cough, fever, diarrhea, loss of appetite..."
@@ -60,34 +62,92 @@
             </div>
 
             <div class="filters">
-                <label>Animal Type:</label>
+                <label>🐄 Animal Type:</label>
                 <select id="animalType">
                     <option value="">All Animals</option>
-                    <option value="cattle">Cattle</option>
-                    <option value="sheep">Sheep</option>
-                    <option value="goat">Goat</option>
-                    <option value="pig">Pig</option>
-                    <option value="poultry">Poultry</option>
+                    <option value="cattle">🐄 Cattle</option>
+                    <option value="sheep">🐑 Sheep</option>
+                    <option value="goat">🐐 Goat</option>
+                    <option value="pig">🐷 Pig</option>
+                    <option value="poultry">🐔 Poultry</option>
                 </select>
             </div>
 
-            <!-- Photo Upload Section -->
+            <!-- ENHANCED Photo Section with Tabs -->
             <div class="photo-upload-section">
-                <h3>📸 Upload Animal Photo (Optional)</h3>
-                <p>Upload a photo of your animal to help with visual diagnosis</p>
-                <div class="upload-area" id="uploadArea">
-                    <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z">
-                        </path>
-                        <circle cx="12" cy="13" r="4"></circle>
-                    </svg>
-                    <p>Click to upload or drag and drop</p>
-                    <p class="upload-hint">PNG, JPG, GIF up to 5MB</p>
-                    <input type="file" id="photoInput" accept="image/*" hidden>
+                <h3>📸 AI Photo Diagnosis</h3>
+                <p>Take a photo or upload one — our AI will analyze it for disease symptoms</p>
+
+                <!-- Tab Buttons -->
+                <div class="photo-tabs" id="photoTabs">
+                    <button class="photo-tab active" data-tab="camera" id="cameraTabBtn">
+                        <span class="tab-icon">📷</span>
+                        <span class="tab-label">Take Photo</span>
+                    </button>
+                    <button class="photo-tab" data-tab="upload" id="uploadTabBtn">
+                        <span class="tab-icon">📁</span>
+                        <span class="tab-label">Upload File</span>
+                    </button>
                 </div>
+
+                <!-- Camera Tab Content -->
+                <div class="tab-content active" id="cameraTab">
+                    <div class="camera-container" id="cameraContainer">
+                        <video id="cameraFeed" autoplay playsinline></video>
+                        <div class="camera-overlay">
+                            <p>Point your camera at the sick animal</p>
+                        </div>
+                        <div class="camera-controls">
+                            <button type="button" id="startCameraBtn" class="camera-btn camera-start-btn">
+                                📷 Open Camera
+                            </button>
+                            <button type="button" id="captureBtn" class="camera-btn camera-capture-btn hidden">
+                                📸 Capture Photo
+                            </button>
+                            <button type="button" id="switchCameraBtn" class="camera-btn camera-switch-btn hidden">
+                                🔄 Flip
+                            </button>
+                            <button type="button" id="stopCameraBtn" class="camera-btn camera-stop-btn hidden">
+                                ✕ Close
+                            </button>
+                        </div>
+                    </div>
+                    <canvas id="captureCanvas" style="display:none;"></canvas>
+                </div>
+
+                <!-- Upload Tab Content -->
+                <div class="tab-content" id="uploadTab">
+                    <div class="upload-area" id="uploadArea">
+                        <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="17 8 12 3 7 8"></polyline>
+                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                        </svg>
+                        <p><strong>Tap here to choose a file</strong></p>
+                        <p class="upload-hint">PNG, JPG, GIF up to 5MB</p>
+                        <input type="file" id="photoInput" accept="image/*" hidden>
+                    </div>
+                </div>
+
+                <!-- Photo Preview (shared by both tabs) -->
                 <div id="photoPreview" class="photo-preview hidden">
-                    <img id="previewImage" src="" alt="Preview">
-                    <button type="button" id="removePhotoBtn" class="remove-photo-btn">Remove Photo</button>
+                    <img id="previewImage" src="" alt="Photo preview of your animal">
+                    <div class="preview-actions">
+                        <button type="button" id="removePhotoBtn" class="remove-photo-btn">🗑️ Remove Photo</button>
+                        <span class="preview-label">✅ Photo ready for analysis</span>
+                    </div>
+                </div>
+
+                <!-- Photo Tips for Farmers -->
+                <div class="photo-tips">
+                    <h4>💡 Tips for a Good Photo</h4>
+                    <ul>
+                        <li>📍 <strong>Get close</strong> — focus on the affected area (swelling, wound, eyes)</li>
+                        <li>☀️ <strong>Good lighting</strong> — natural daylight works best</li>
+                        <li>📐 <strong>Hold steady</strong> — avoid blurry photos for better AI results</li>
+                        <li>🔄 <strong>Multiple angles</strong> — take photos from different sides if possible</li>
+                    </ul>
                 </div>
             </div>
 
