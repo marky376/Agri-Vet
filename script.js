@@ -550,6 +550,20 @@ function setupPhotoUpload() {
             if (photoInput) photoInput.value = '';
             photoPreview.classList.add('hidden');
             if (uploadArea) uploadArea.classList.remove('hidden');
+
+            // Restore tabs visibility
+            const photoTabs = document.getElementById('photoTabs');
+            const cameraTab = document.getElementById('cameraTab');
+            const uploadTab = document.getElementById('uploadTab');
+            const cameraTabBtn = document.getElementById('cameraTabBtn');
+            const uploadTabBtn = document.getElementById('uploadTabBtn');
+            if (photoTabs) photoTabs.classList.remove('hidden');
+            // Restore the previously active tab
+            if (cameraTabBtn && cameraTabBtn.classList.contains('active')) {
+                if (cameraTab) cameraTab.classList.remove('hidden');
+            } else if (uploadTabBtn && uploadTabBtn.classList.contains('active')) {
+                if (uploadTab) uploadTab.classList.remove('hidden');
+            }
         });
     }
 }
@@ -614,6 +628,14 @@ function handlePhotoUpload(file) {
         previewImage.src = uploadedPhoto.data;
         if (uploadArea) uploadArea.classList.add('hidden');
         photoPreview.classList.remove('hidden');
+
+        // Hide tabs and tab content so preview replaces them visually
+        const photoTabs = document.getElementById('photoTabs');
+        const cameraTab = document.getElementById('cameraTab');
+        const uploadTab = document.getElementById('uploadTab');
+        if (photoTabs) photoTabs.classList.add('hidden');
+        if (cameraTab) cameraTab.classList.add('hidden');
+        if (uploadTab) uploadTab.classList.add('hidden');
     };
     reader.readAsDataURL(file);
 }
